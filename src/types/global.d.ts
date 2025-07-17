@@ -44,7 +44,7 @@ declare global {
     interimResults: boolean;
     lang: string;
     maxAlternatives: number;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     onend: ((this: SpeechRecognition, ev: Event) => any) | null;
     onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null;
     onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null;
