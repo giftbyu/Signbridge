@@ -1,23 +1,27 @@
-import type { Metadata } from "next";
-// Hapus impor font jika Anda mengimpornya di CSS
-// import { Inter } from "next/font/google"; 
-import "./globals.css";
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
 
-// const inter = Inter({ subsets: ["latin"] });
-
+// Mengatur judul dan deskripsi default untuk aplikasi Anda
 export const metadata: Metadata = {
-  title: "SignBridge",
-  description: "Aplikasi Penerjemah Bahasa Isyarat",
+  title: 'SignBridge',
+  description: 'Aplikasi Penerjemah Bahasa Isyarat SIBI & BISINDO',
+};
+
+// INI BAGIAN PALING PENTING: Mengatur viewport untuk mobile
+export const viewport: Viewport = {
+  width: 'device-width',      // Mengatur lebar halaman sesuai lebar perangkat
+  initialScale: 1,            // Mengatur zoom awal ke 100%
+  maximumScale: 1,            // Mencegah pengguna melakukan zoom-in
+  userScalable: false,        // Mencegah pengguna melakukan zoom
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      {/* Hapus className dari <body> agar CSS kita yang mengambil alih */}
       <body>{children}</body>
     </html>
   );
