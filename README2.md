@@ -1,210 +1,178 @@
-Proyek Penerjemah Bahasa Isyarat SIBI dan BISINDO
-Dokumentasi ini menjelaskan alur kerja lengkap untuk proyek klasifikasi gambar abjad Bahasa Isyarat Indonesia (BISINDO) dan Sistem Isyarat Bahasa Indonesia (SIBI) menggunakan pendekatan hybrid deep learning. Proyek ini mencakup empat tahap utama: pengumpulan dataset, augmentasi data, pelatihan model, dan konversi model untuk penggunaan di perangkat mobile.
+# 🤟 Penerjemah Bahasa Isyarat SIBI & BISINDO
 
-Deskripsi Umum
-Proyek ini bertujuan untuk membangun dan melatih model deep learning yang mampu mengenali 26 abjad (A-Z) dari bahasa isyarat SIBI dan BISINDO. Model yang digunakan adalah arsitektur hybrid yang menggabungkan:
+Selamat datang di Proyek Penerjemah Bahasa Isyarat Indonesia\! Proyek ini adalah implementasi *deep learning* untuk mengenali dan menerjemahkan abjad dari dua sistem bahasa isyarat utama di Indonesia: **SIBI** (Sistem Isyarat Bahasa Indonesia) dan **BISINDO** (Bahasa Isyarat Indonesia).
 
-Convolutional Neural Network (CNN) berbasis EfficientNetB0 untuk mengekstraksi fitur visual dari gambar.
+Tujuan utamanya adalah membangun sebuah model yang akurat dan efisien, yang dapat menjadi jembatan komunikasi antara komunitas Tuli dan masyarakat luas.
 
-Multi-Layer Perceptron (MLP) untuk mengekstraksi fitur geometris dari landmark (titik-titik kunci) tangan menggunakan MediaPipe.
+-----
 
-Kedua fitur ini kemudian digabungkan untuk menghasilkan prediksi akhir, menciptakan model yang lebih akurat dan tangguh.
+### Daftar Isi
 
-Arsitektur & Teknologi
-Bahasa Pemrograman: Python 3
+1.  [Deskripsi Proyek](https://www.google.com/search?q=%23deskripsi-proyek)
+2.  [Fitur Utama](https://www.google.com/search?q=%23fitur-utama)
+3.  [Arsitektur Model & Teknologi](https://www.google.com/search?q=%23arsitektur-model--teknologi)
+4.  [Struktur Direktori](https://www.google.com/search?q=%23struktur-direktori)
+5.  [Panduan Instalasi & Penggunaan](https://www.google.com/search?q=%23panduan-instalasi--penggunaan)
+      - [Tahap 1: Pengumpulan Dataset](https://www.google.com/search?q=%23tahap-1-pengumpulan-dataset-create_datasetpy)
+      - [Tahap 2: Augmentasi Dataset](https://www.google.com/search?q=%23tahap-2-augmentasi-dataset-mirrorpy)
+      - [Tahap 3: Pelatihan Model](https://www.google.com/search?q=%23tahap-3-preprocessing-dan-pelatihan-model-ipynb)
+      - [Tahap 4: Konversi ke TFLite](https://www.google.com/search?q=%23tahap-4-konversi-model-ke-tflite-tflite_convertpy)
+6.  [Catatan Tambahan](https://www.google.com/search?q=%23catatan-tambahan)
 
-Library Utama:
+-----
 
-TensorFlow & Keras (Untuk membangun dan melatih model)
+## Deskripsi Proyek
 
-OpenCV (Untuk pemrosesan gambar dan pengambilan data dari webcam)
+Proyek ini menggunakan pendekatan **hybrid deep learning** untuk mengenali 26 isyarat abjad (A-Z) SIBI dan BISINDO dari gambar. Dengan menggabungkan analisis fitur visual (bentuk dan tekstur tangan) melalui **CNN** dan analisis fitur geometris (posisi jari-jari) melalui **MLP** dengan data *landmark* dari MediaPipe, model ini mencapai tingkat akurasi yang lebih tinggi dibandingkan jika hanya menggunakan satu jenis fitur.
 
-MediaPipe (Untuk deteksi dan ekstraksi landmark tangan)
+## Fitur Utama
 
-Numpy (Untuk operasi numerik)
+  - **Dukungan Ganda**: Mampu mengenali abjad dari SIBI dan BISINDO.
+  - **Arsitektur Hybrid**: Menggabungkan **EfficientNetB0** untuk fitur visual dan **MLP** untuk fitur landmark tangan, menghasilkan model yang robust.
+  - **Pengumpulan Data Terpandu**: Skrip interaktif untuk mengumpulkan dataset gambar secara sistematis menggunakan webcam.
+  - **Augmentasi Data**: Termasuk skrip untuk augmentasi cermin (*mirroring*) guna memperkaya variasi data dan meningkatkan generalisasi model.
+  - **Pelatihan Efisien**: Menggunakan Google Colab dengan akselerasi GPU untuk proses training dan *fine-tuning* yang cepat.
+  - **Siap untuk Deployment**: Model akhir dioptimalkan dan dikonversi ke format **TensorFlow Lite (.tflite)**, membuatnya siap untuk diintegrasikan ke dalam aplikasi mobile (Android/iOS).
 
-Lingkungan:
+## Arsitektur Model & Teknologi
 
-Visual Studio Code: Untuk menjalankan skrip Python (.py).
+Model ini dibangun dengan arsitektur dua cabang yang bekerja secara paralel:
 
-Google Colaboratory (Colab): Untuk menjalankan notebook pelatihan model (.ipynb) yang membutuhkan akselerasi GPU.
+1.  **Cabang Visual (CNN)**:
 
-Alur Kerja Proyek (Workflow)
-Proyek ini harus dijalankan dalam urutan berikut untuk hasil yang optimal:
+      - Menggunakan **EfficientNetB0** yang telah dilatih sebelumnya pada dataset ImageNet.
+      - Model ini bertugas mengekstraksi fitur-fitur kompleks seperti bentuk, tekstur, dan orientasi tangan dari gambar input.
+      - Teknik *transfer learning* dan *fine-tuning* diterapkan untuk menyesuaikan model dengan dataset bahasa isyarat.
 
-Tahap 1: Pengumpulan Dataset (create_dataset.py)
+2.  **Cabang Landmark (MLP)**:
 
-Menggunakan webcam untuk mengambil gambar setiap isyarat abjad untuk SIBI dan BISINDO.
+      - Menggunakan **MediaPipe Hands** untuk mendeteksi 21 titik kunci (landmark) pada setiap tangan.
+      - Koordinat (x, y, z) dari landmark ini dinormalisasi dan dijadikan input untuk jaringan Multi-Layer Perceptron (MLP).
+      - Cabang ini fokus pada pemahaman struktur geometris dan postur jari-jari tangan.
 
-Tahap 2: Augmentasi Dataset (mirror.py)
+Fitur dari kedua cabang ini kemudian digabungkan (*concatenate*) dan dimasukkan ke dalam lapisan *classifier* akhir untuk menghasilkan prediksi abjad.
 
-(Opsional namun direkomendasikan) Menggandakan jumlah dataset dengan membuat versi cermin (flipped horizontal) dari setiap gambar.
+-----
 
-Tahap 3: Preprocessing dan Pelatihan Model (.ipynb)
+## Struktur Direktori
 
-Menggunakan Google Colab untuk memuat dataset, melakukan preprocessing (ekstraksi landmark), dan melatih model hybrid hingga menghasilkan file .keras.
+Pastikan Anda mengatur direktori proyek seperti di bawah ini untuk kelancaran eksekusi semua skrip.
 
-Tahap 4: Konversi Model ke TFLite (tflite_convert.py)
-
-Mengonversi model .keras yang sudah dilatih menjadi format .tflite yang ringan dan efisien untuk aplikasi mobile atau embedded.
-
-Detail Program dan Instruksi Penggunaan
-Berikut adalah penjelasan detail untuk setiap file program.
-
-1. create_dataset.py
-Tujuan: Skrip ini berfungsi untuk membuat dataset gambar bahasa isyarat secara otomatis menggunakan webcam. Skrip akan membuat struktur direktori yang diperlukan dan memandu pengguna untuk mengambil gambar setiap abjad.
-
-Lingkungan: Visual Studio Code (atau terminal Python lainnya).
-
-Konfigurasi Utama:
-
-DATA_DIR: Direktori utama tempat dataset akan disimpan (default: ./dataset).
-
-METHODES: Daftar sistem isyarat yang akan dibuatkan datasetnya (default: ['SIBI', 'BISINDO']).
-
-NUM_IMAGES_PER_ALPHABET: Jumlah gambar yang akan diambil untuk setiap abjad (default: 200).
-
-Cara Menjalankan:
-
-Buka terminal atau command prompt di direktori proyek.
-
-Jalankan perintah: python create_dataset.py
-
-Sebuah jendela webcam akan muncul. Skrip akan meminta Anda untuk mempersiapkan isyarat tangan untuk abjad 'A'.
-
-Posisikan tangan Anda di depan kamera, lalu tekan tombol 'S' pada keyboard untuk memulai pengambilan gambar.
-
-Akan ada hitungan mundur 3 detik sebelum pengambilan gambar dimulai.
-
-Skrip akan secara otomatis mengambil 200 gambar. Setelah selesai, proses akan berlanjut untuk abjad 'B', dan seterusnya.
-
-Anda bisa menghentikan proses kapan saja dengan menekan tombol 'Q'.
-
-Output: Struktur direktori seperti di bawah ini, berisi gambar-gambar yang telah diambil.
-
-./dataset/
-├── SIBI/
-│   ├── A/ (berisi 200 gambar)
-│   ├── B/
-│   └── ...
-└── BISINDO/
-    ├── A/
-    └── ...
-2. mirror.py
-Tujuan: Melakukan augmentasi data dengan membuat salinan cermin (flip horizontal) dari setiap gambar dalam dataset. Ini bertujuan untuk meningkatkan variasi data dan membuat model lebih tangguh terhadap variasi orientasi tangan.
-
-Lingkungan: Visual Studio Code (atau terminal Python lainnya).
-
-Konfigurasi Utama:
-
-SOURCE_DATA_DIR: Path ke direktori dataset yang ingin di-augmentasi (default: ./dataset/SIBI). Ubah ke ./dataset/BISINDO jika diperlukan.
-
-OUTPUT_DIR_NAME: Nama direktori baru untuk menyimpan dataset hasil augmentasi (default: ./dataset_augmented_sibi).
-
-Cara Menjalankan:
-
-Pastikan SOURCE_DATA_DIR sudah diatur dengan benar.
-
-Jalankan perintah: python mirror.py
-
-Output: Sebuah direktori baru (misal: ./dataset_augmented_sibi) yang berisi salinan gambar asli dan versi cerminnya (dengan nama file flipped_...). Jumlah gambar di direktori output akan menjadi dua kali lipat dari direktori sumber.
-
-3. Preprocessing_Training.ipynb dan preprocessing_bisindo.ipynb
-Tujuan: Notebook ini adalah inti dari proyek, di mana proses preprocessing data dan pelatihan model hybrid dilakukan. Prosesnya meliputi:
-
-Memuat gambar dari dataset.
-
-Menggunakan MediaPipe untuk mendeteksi tangan dan mengekstraksi 42 landmark (koordinat x, y, z) untuk setiap tangan.
-
-Membangun arsitektur model hybrid (EfficientNetB0 + MLP).
-
-Melakukan augmentasi data secara on-the-fly (rotasi, zoom, kontras, dan mirroring).
-
-Melatih model dengan teknik transfer learning dan fine-tuning.
-
-Lingkungan: Google Colaboratory (disarankan menggunakan GPU runtime untuk mempercepat pelatihan).
-
-Konfigurasi Utama:
-
-DATA_DIR: PENTING! Ubah path ini agar sesuai dengan lokasi dataset Anda di Google Drive (misal: /content/drive/MyDrive/dataset/dataset_augmented_sibi).
-
-EPOCHS & FINE_TUNE_EPOCHS: Jumlah epoch untuk training awal dan fine-tuning.
-
-Cara Menjalankan:
-
-Upload dataset Anda (yang sudah di-augmentasi jika menggunakan mirror.py) ke Google Drive Anda.
-
-Buka file .ipynb yang sesuai (satu untuk SIBI, satu untuk BISINDO) di Google Colab.
-
-Jalankan sel pertama untuk menghubungkan Colab dengan Google Drive Anda dan berikan izin akses.
-
-Ubah variabel DATA_DIR di sel konfigurasi.
-
-Jalankan semua sel secara berurutan dari atas ke bawah. Proses pelatihan akan memakan waktu cukup lama.
-
-Output:
-
-Grafik akurasi dan loss selama proses pelatihan.
-
-Sebuah file model yang telah dilatih dengan format .keras (misal: sibi_hybrid_model_v_final.keras), yang tersimpan di Google Drive Anda.
-
-4. tflite_convert.py
-Tujuan: Skrip ini mengonversi model .keras yang berat menjadi format TensorFlow Lite (.tflite) yang ringan dan teroptimasi. Model ini cocok untuk diimplementasikan pada aplikasi Android atau perangkat dengan sumber daya terbatas.
-
-Lingkungan: Visual Studio Code (atau terminal Python lainnya).
-
-Konfigurasi Utama:
-
-MODEL_TO_CONVERT: Pilih model mana yang akan dikonversi ('SIBI' atau 'BISINDO').
-
-KERAS_MODEL_PATH: Path lengkap ke file .keras hasil pelatihan.
-
-DATA_DIR: Path ke direktori dataset yang sesuai (digunakan untuk membuat file labels.txt).
-
-TFLITE_OUTPUT_PATH: Nama dan path untuk file .tflite yang akan dihasilkan.
-
-Cara Menjalankan:
-
-Pastikan Anda telah mengunduh file .keras dari Google Drive ke direktori models di proyek lokal Anda.
-
-Atur variabel-variabel di bagian konfigurasi agar sesuai dengan model yang ingin Anda konversi.
-
-Jalankan perintah: python tflite_convert.py
-
-Output:
-
-File model ringan: ./models/sibi_model_lightweight.tflite (atau nama yang sesuai).
-
-File label: ./models/labels.txt, yang berisi daftar nama kelas (A-Z) sesuai urutan yang dipelajari oleh model.
-
-Struktur Direktori Proyek
-Struktur direktori yang disarankan untuk proyek ini adalah sebagai berikut:
-
+```
 proyek-bahasa-isyarat/
-├── create_dataset.py
-├── mirror.py
-├── Preprocessing_Training.ipynb
-├── preprocessing_bisindo.ipynb
-├── tflite_convert.py
-├── README.md
 │
-├── dataset/
+├── create_dataset.py           # Skrip untuk mengumpulkan data
+├── mirror.py                   # Skrip untuk augmentasi cermin
+├── Preprocessing_Training.ipynb  # Notebook untuk pelatihan model SIBI
+├── preprocessing_bisindo.ipynb   # Notebook untuk pelatihan model BISINDO
+├── tflite_convert.py           # Skrip untuk konversi ke TFLite
+├── README.md                   # Dokumentasi ini
+│
+├── dataset/                    # Dihasilkan oleh create_dataset.py
 │   ├── SIBI/
 │   │   ├── A/, B/, ...
 │   └── BISINDO/
 │       ├── A/, B/, ...
 │
-├── dataset_augmented_sibi/  (Dihasilkan oleh mirror.py)
-│   ├── SIBI/
-│   │   ├── A/, B/, ...
+├── dataset_augmented_sibi/     # Dihasilkan oleh mirror.py
+│   └── SIBI/
+│       ├── A/, B/, ...
 │
-├── models/
-│   ├── sibi_hybrid_model_v_final.keras  (Dihasilkan oleh notebook)
-│   ├── bisindo_hybrid_model_v_final.keras (Dihasilkan oleh notebook)
-│   ├── sibi_model_lightweight.tflite    (Dihasilkan oleh tflite_convert.py)
-│   ├── bisindo_model_lightweight.tflite (Dihasilkan oleh tflite_convert.py)
-│   └── labels.txt                       (Dihasilkan oleh tflite_convert.py)
-Catatan Tambahan
-Dependencies: Pastikan untuk menginstal semua library yang diperlukan sebelum menjalankan skrip. Anda dapat membuat file requirements.txt dan menginstalnya dengan pip install -r requirements.txt. Library utama adalah tensorflow, opencv-python, mediapipe.
+└── models/                     # Tempat menyimpan model
+    ├── sibi_hybrid_model_v_final.keras
+    ├── bisindo_hybrid_model_v_final.keras
+    ├── sibi_model_lightweight.tflite
+    ├── bisindo_model_lightweight.tflite
+    └── labels.txt
+```
 
-Augmentasi: Notebook preprocessing_bisindo.ipynb melakukan augmentasi cermin secara on-the-fly di dalam data_generator, sehingga tidak memerlukan skrip mirror.py secara terpisah. Sementara itu, alur kerja untuk SIBI dalam dokumentasi ini menggunakan mirror.py untuk membuat dataset teraugmentasi terlebih dahulu sebelum dilatih dengan Preprocessing_Training.ipynb. Keduanya adalah pendekatan yang valid.
+-----
+
+## Panduan Instalasi & Penggunaan
+
+Ikuti langkah-langkah di bawah ini secara berurutan.
+
+### Pra-Instalasi
+
+1.  **Clone Repository** (Jika ada):
+    ```bash
+    git clone <URL_REPOSITORY_ANDA>
+    cd proyek-bahasa-isyarat
+    ```
+2.  **Instalasi Dependencies**: Pastikan Anda memiliki Python 3.8+ terinstal.
+    ```bash
+    pip install tensorflow opencv-python mediapipe
+    ```
+
+### Tahap 1: Pengumpulan Dataset (`create_dataset.py`)
+
+> 실행 환경: **Visual Studio Code**
+
+  * **Tujuan**: Mengambil gambar isyarat tangan dari webcam untuk membuat dataset mentah.
+  * **Konfigurasi**: Anda bisa mengubah variabel berikut di dalam skrip:
+      - `DATA_DIR`: Folder utama untuk menyimpan dataset.
+      - `METHODES`: Sistem isyarat yang akan direkam (`['SIBI', 'BISINDO']`).
+      - `NUM_IMAGES_PER_ALPHABET`: Jumlah gambar per abjad.
+  * **Eksekusi**:
+    ```bash
+    python create_dataset.py
+    ```
+      - Ikuti instruksi yang muncul di jendela webcam. Tekan **'S'** untuk mulai merekam setiap abjad dan **'Q'** untuk berhenti.
+
+### Tahap 2: Augmentasi Dataset (`mirror.py`)
+
+> **Visual Studio Code**
+
+  * **Tujuan**: Menggandakan dataset SIBI dengan mencerminkan gambar secara horizontal untuk meningkatkan performa model.
+  * **Konfigurasi**: Sesuaikan variabel ini jika perlu:
+      - `SOURCE_DATA_DIR`: Dataset sumber yang akan di-augmentasi.
+      - `OUTPUT_DIR_NAME`: Folder baru untuk hasil augmentasi.
+  * **Eksekusi**:
+    ```bash
+    python mirror.py
+    ```
+
+### Tahap 3: Preprocessing dan Pelatihan Model (`.ipynb`)
+
+> 実行環境: **Google Colaboratory (Gunakan GPU Runtime)**
+
+  * **Tujuan**: Memproses data mentah, mengekstrak fitur, dan melatih model hybrid hingga siap digunakan.
+  * **Eksekusi**:
+    1.  Buka `Preprocessing_Training.ipynb` (untuk SIBI) atau `preprocessing_bisindo.ipynb` (untuk BISINDO) di Google Colab.
+    2.  Unggah folder dataset Anda (misalnya, `dataset_augmented_sibi`) ke Google Drive.
+    3.  Jalankan sel kode untuk **Mount Google Drive**.
+    4.  **Sangat Penting**: Ubah path pada variabel `DATA_DIR` agar menunjuk ke lokasi dataset Anda di Google Drive.
+        ```python
+        # Contoh
+        DATA_DIR = '/content/drive/MyDrive/Skripsi/dataset/SIBI_augmentend' # Untuk SIBI
+        DATA_DIR = '/content/drive/MyDrive/Skripsi/dataset/dataset_augmented/BISINDO' # Untuk BISINDO
+        ```
+    5.  Jalankan semua sel secara berurutan. Proses ini akan melakukan:
+          - Membuat `data_generator` yang memuat gambar dan mengekstrak landmark MediaPipe.
+          - Membangun arsitektur model hybrid.
+          - Melatih *classifier* terlebih dahulu, kemudian melakukan *fine-tuning* pada beberapa lapisan EfficientNetB0 untuk akurasi yang lebih baik.
+  * **Hasil**: File model `.keras` yang tersimpan di Google Drive, misalnya `sibi_hybrid_model_v_final.keras`.
+
+### Tahap 4: Konversi Model ke TFLite (`tflite_convert.py`)
+
+> 실행 환경: **Visual Studio Code**
+
+  * **Tujuan**: Mengecilkan ukuran model `.keras` dan mengoptimalkannya untuk inferensi cepat di perangkat mobile.
+  * **Konfigurasi**: Sebelum menjalankan, pastikan untuk mengatur:
+      - `MODEL_TO_CONVERT`: Pilih antara `'SIBI'` atau `'BISINDO'`.
+      - `KERAS_MODEL_PATH`: Sesuaikan dengan nama file `.keras` yang telah Anda latih dan unduh.
+      - `TFLITE_OUTPUT_PATH`: Nama file keluaran `.tflite`.
+  * **Eksekusi**:
+    ```bash
+    python tflite_convert.py
+    ```
+  * **Hasil**:
+      - File `sibi_model_lightweight.tflite` atau `bisindo_model_lightweight.tflite` di dalam folder `models`.
+      - File `labels.txt` yang berisi urutan kelas (A-Z).
+
+-----
+
+## Catatan Tambahan
+
+  - **Perbedaan Augmentasi**: Perlu dicatat bahwa untuk dataset SIBI, augmentasi dilakukan secara *offline* menggunakan `mirror.py`. Sementara untuk BISINDO, augmentasi cermin dilakukan secara *on-the-fly* (langsung saat pelatihan) di dalam notebook `preprocessing_bisindo.ipynb`.
+  - **Pengembangan Lanjutan**: Model `.tflite` yang dihasilkan dapat langsung diintegrasikan ke dalam aplikasi Android menggunakan TensorFlow Lite Interpreter. File `labels.txt` sangat penting untuk memetakan output numerik dari model kembali ke label abjad yang dapat dibaca manusia.
