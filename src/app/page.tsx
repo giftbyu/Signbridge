@@ -18,14 +18,6 @@ const HAND_CONNECTIONS = [
   { start: 0, end: 17 }
 ];
 
-
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-
 type Landmark = { x: number; y: number; z: number; visibility?: number };
 
 export default function HomePage() {
