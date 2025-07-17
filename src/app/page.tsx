@@ -158,7 +158,7 @@ export default function HomePage() {
     const modeSelect = document.getElementById("detection-mode") as HTMLSelectElement;
     const detectionMode = modeSelect.value.toLowerCase().includes('sibi') ? 'sibi' : 'bisindo';
     try {
-      const response = await fetch("https://b00e3a572c35.ngrok-free.app/predict", {
+      const response = await fetch("https://c39370ac0967.ngrok-free.app/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData, landmarks, mode: detectionMode }),
