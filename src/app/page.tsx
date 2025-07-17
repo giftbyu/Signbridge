@@ -158,11 +158,14 @@ export default function HomePage() {
     const modeSelect = document.getElementById("detection-mode") as HTMLSelectElement;
     const detectionMode = modeSelect.value.toLowerCase().includes('sibi') ? 'sibi' : 'bisindo';
     try {
-      const response = await fetch("https://c39370ac0967.ngrok-free.app/predict", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image: imageData, landmarks, mode: detectionMode }),
-      });
+  // Logika baru untuk menentukan URL API
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+  
+  const response = await fetch(`${apiUrl}/predict`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ image: imageData, landmarks, mode: detectionMode }),
+  });
       if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
       const result = await response.json();
       if (result.prediction && isDetectingRef.current) {
