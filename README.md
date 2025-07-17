@@ -5,16 +5,15 @@ Selamat datang di **SignBridge**, sebuah aplikasi web inovatif yang dirancang un
 Dokumentasi ini mencakup seluruh siklus hidup proyek: mulai dari pengumpulan data dan pelatihan model *machine learning*, hingga menjalankan aplikasi web secara lengkap.
 
 ### Daftar Isi
-
-1.  [✨ Fitur Utama](https://www.google.com/search?q=%23-fitur-utama)
-2.  [🏛️ Arsitektur Keseluruhan](https://www.google.com/search?q=%23%EF%B8%8F-arsitektur-keseluruhan)
-      - [Arsitektur Aplikasi (Klien-Server)](https://www.google.com/search?q=%23arsitektur-aplikasi-klien-server)
-      - [Arsitektur Model Machine Learning (Hybrid)](https://www.google.com/search?q=%23arsitektur-model-machine-learning-hybrid)
-3.  [🗂️ Struktur Direktori Proyek](https://www.google.com/search?q=%23%EF%B8%8F-struktur-direktori-proyek)
-4.  [🚀 Panduan Lengkap](https://www.google.com/search?q=%23-panduan-lengkap)
-      - [Bagian 1: Pembuatan Model Machine Learning (Dari Awal)](https://www.google.com/search?q=%23bagian-1-pembuatan-model-machine-learning-dari-awal)
-      - [Bagian 2: Menjalankan Aplikasi Web SignBridge](https://www.google.com/search?q=%23bagian-2-menjalankan-aplikasi-web-signbridge)
-5.  [💻 Teknologi yang Digunakan](https://www.google.com/search?q=%23-teknologi-yang-digunakan)
+1.  [✨ Fitur Utama](#-fitur-utama)
+2.  [🏛️ Arsitektur Keseluruhan](#️-arsitektur-keseluruhan)
+    - [Arsitektur Aplikasi (Klien-Server)](#arsitektur-aplikasi-klien-server)
+    - [Arsitektur Model Machine Learning (Hybrid)](#arsitektur-model-machine-learning-hybrid)
+3.  [🗂️ Struktur Direktori Proyek](#️-struktur-direktori-proyek)
+4.  [🚀 Panduan Lengkap](#-panduan-lengkap)
+    - [Bagian 1: Pembuatan Model Machine Learning (Dari Awal)](#bagian-1-pembuatan-model-machine-learning-dari-awal)
+    - [Bagian 2: Menjalankan Aplikasi Web SignBridge](#bagian-2-menjalankan-aplikasi-web-signbridge)
+5.  [💻 Teknologi yang Digunakan](#-teknologi-yang-digunakan)
 
 -----
 
