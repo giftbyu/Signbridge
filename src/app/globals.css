@@ -1,26 +1,349 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --primary-color: #42bbff;
+    --primary-color-dark: #2a96e8;
+    --primary-color-light: #a6dbff;
+    --text-color: #222;
+    --border-radius: 10px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+    box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background: radial-gradient(circle, rgba(66,187,255,0.2) 0%, rgba(255,255,255,1) 70%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: var(--text-color);
+    padding: 1rem;
+}
+
+header {
+    margin: 0rem 0 1rem;
+    height: 50px; /* Beri tinggi agar layout stabil */
+    display: flex;
+    align-items: center;
+}
+
+main {
+    background: rgba(255 255 255 / 0.95);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    max-width: 1100px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.video-form-container {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+}
+
+#video-container {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background: black;
+    width: 50%;
+    aspect-ratio: 4 / 3;
+}
+
+#video-container > video, #video-container > canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    object-fit: contain;
+    transform: scaleX(-1); /* Ini kuncinya: membalik secara horizontal */
+}
+
+#field-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: flex-start;
+    width: 50%;
+}
+
+@media (max-width: 768px) {
+    .video-form-container {
+        flex-direction: column;
+    }
+    #video-container, #field-container {
+        width: 100%;
+    }
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--primary-color-dark);
+}
+
+textarea, select {
+    width: 100%;
+    border: 2px solid var(--primary-color-light);
+    border-radius: var(--border-radius);
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fefeff;
+    box-shadow: inset 0 2px 6px rgba(66,187,255,0.15);
+    transition: all 0.3s ease;
+}
+
+textarea {
+    resize: none;
+}
+
+textarea:focus, select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 8px var(--primary-color-light);
+    background: #fff;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+button {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(66,187,255,0.6);
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+button:hover {
+    background: var(--primary-color-dark);
+}
+
+button.active-btn {
+    background-color: #d9534f;
+    box-shadow: 0 4px 8px rgba(217, 83, 79, 0.6);
+}
+
+button.active-btn:hover {
+    background-color: #c9302c;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin: 2rem 0 1.5rem;
+    font-weight: 800;
+    color: #0077a6;
+    text-align: center;
+}
+
+.info-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.info-card {
+    flex: 1;
+    min-width: 300px;
+    max-width: 420px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border-top: 4px solid var(--primary-color);
+    text-align: center;
+}
+
+.info-card-image {
+    max-height: 300px;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
+.info-card h3 {
+    color: #0077a6;
+    margin-top: 0;
+}
+
+.suggested-area {
+  width: 100%;
+  min-height: 84px; /* Menyamai tinggi 3 baris textarea */
+  border: 2px solid var(--primary-color-light);
+  border-radius: var(--border-radius);
+  padding: 0.8rem;
+  background: #fefeff;
+  box-shadow: inset 0 2px 6px rgba(66,187,255,0.15);
+  display: flex;
+  flex-wrap: wrap; /* <-- Ini kunci agar kata bisa turun ke baris baru */
+  align-content: flex-start;
+  gap: 0.5rem;
+}
+
+.suggested-area:empty::before {
+  content: "Saran kata akan muncul di sini...";
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* ... (kode CSS Anda yang lain) ... */
+
+/* === STYLING UNTUK LOADING SCREEN === */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle, rgba(66,187,255,0.2) 0%, rgba(255,255,255,1) 70%);
+  gap: 1.5rem;
+}
+
+.loading-logo {
+  font-weight: 800;
+  font-size: 3.5rem;
+  color: var(--primary-color);
+  user-select: none;
+  text-shadow: 0 0 8px rgba(66,187,255,0.5);
+}
+
+.waving-hand {
+  font-size: 4rem; /* Ukuran ikon tangan */
+  color: var(--primary-color);
+  /* Menerapkan animasi yang kita definisikan di bawah */
+  animation: wave-animation 2.5s infinite;
+  /* Mengatur titik pivot agar lambaian terlihat alami */
+  transform-origin: 70% 70%;
+}
+
+/* Styling untuk ikon SVG tangan kita */
+.waving-hand-svg {
+  width: 120px;   /* Atur lebar ikon */
+  height: 120px;  /* Atur tinggi ikon */
+  fill: var(--primary-color); /* Atur warna ikon menggunakan variabel CSS kita */
+}
+
+.motion-line {
+  font-size: 2rem; /* Ukuran tanda kurung */
+  font-weight: 800;
+  color: var(--primary-color-light); /* Warna yang sedikit lebih pudar */
+  position: absolute; /* Diposisikan relatif terhadap container */
+}
+
+/* ... (kode CSS Anda yang lain) ... */
+
+/* === STYLING UNTUK FITUR PENGATURAN KAMERA === */
+
+.settings-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background-color: rgb(255, 255, 255);
+ color: var(--primary-color-dark); 
+  border: none;
+  border-radius: 30%;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: background-color 0.2s ease;
+}
+
+.settings-btn:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+.settings-panel {
+  position: absolute;
+  top: 60px;
+  right: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(5px);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 20;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-panel label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.settings-panel input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--primary-color-light);
+  border-radius: 5px;
+  outline: none;
+  opacity: 0.8;
+  transition: opacity .2s;
+}
+
+.settings-panel input[type="range"]:hover {
+  opacity: 1;
+}
+
+.settings-panel input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.settings-panel input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--primary-color);
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid white;
 }
