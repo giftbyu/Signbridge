@@ -158,7 +158,7 @@ export default function HomePage() {
     const modeSelect = document.getElementById("detection-mode") as HTMLSelectElement;
     const detectionMode = modeSelect.value.toLowerCase().includes('sibi') ? 'sibi' : 'bisindo';
     try {
-  // Logika baru untuk menentukan URL API
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
   
   const response = await fetch(`${apiUrl}/predict`, {
